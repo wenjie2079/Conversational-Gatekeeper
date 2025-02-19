@@ -1,5 +1,5 @@
 import os
-from typing import List
+from typing import List, Dict
 from fastapi import FastAPI
 from pydantic import BaseModel
 from dotenv import load_dotenv
@@ -16,6 +16,9 @@ load_dotenv()
 OpenAI.api_key = os.getenv("OPENAI_API_KEY")
 OpenAI.api_base = os.getenv("OPENAI_BASE_URL")
 client = OpenAI(api_key=OpenAI.api_key, base_url=OpenAI.api_base)
+
+# Sessions
+session_store: Dict[str, List[Dict[str, str]]] = {}
 
 # Your user secrets database
 USER_SECRET_DATABASE = {
@@ -89,15 +92,16 @@ Your goal:
 
     # Construct the conversation for OpenAI:
     # Start with the system prompt, followed by the messages from the client
-    conversation_history = [{"role": "system", "content": system_prompt}]
-    for m in req.messages:
-        conversation_history.append({"role": m.role, "content": m.content})
+    session_store[username] = [{"role": "system", "content": system_prompt}]
+    # loop req.messages and append to session_store[username]
+    for message in req.messages:
+        session_store[username].append({"role": 'user', "content": message.content})
 
     # Call OpenAI ChatCompletion
     try:
         response = client.chat.completions.create(
             model="gpt-4o",  # or "gpt-3.5-turbo", "gpt-4", etc.
-            messages=conversation_history
+            messages=session_store[username]
         )
     except Exception as e:
         # If an error occurs (network, invalid API key, etc.), handle gracefully
