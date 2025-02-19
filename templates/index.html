@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 守门人</title>
+    <title>AI Gate Kepper</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -70,14 +70,14 @@
 <body>
     <div class="container">
         <div class="login-container">
-            <input type="text" id="username" placeholder="输入用户名">
-            <button onclick="startChat()">开始认证</button>
+            <input type="text" id="username" placeholder="Enter User">
+            <button onclick="startChat()">Start Authenticating</button>
         </div>
         <div class="chat-container" style="display: none;">
             <div class="messages" id="messages"></div>
             <div class="input-container">
-                <input type="text" id="messageInput" placeholder="输入消息...">
-                <button onclick="sendMessage()">发送</button>
+                <input type="text" id="messageInput" placeholder="Enter Message">
+                <button onclick="sendMessage()">Send</button>
             </div>
         </div>
     </div>
@@ -89,12 +89,12 @@
         function startChat() {
             currentUsername = document.getElementById('username').value.trim();
             if (!currentUsername) {
-                alert('请输入用户名');
+                alert('Please Enter User name');
                 return;
             }
             document.querySelector('.login-container').style.display = 'none';
             document.querySelector('.chat-container').style.display = 'block';
-            addMessage('assistant', '你好！为了验证你的身份，让我们聊聊天吧。');
+            addMessage('assistant', 'Hi! To authenticate your name, let us Chat!');
         }
 
         function addMessage(role, content) {
@@ -132,17 +132,17 @@
 
                 if (data.verdict) {
                     setTimeout(() => {
-                        alert(data.verdict === 'PASS' ? '认证成功！' : '认证失败！');
+                        alert(data.verdict === 'PASS' ? 'Authentication Success!' : 'Authentication Failed');
                         location.reload();
                     }, 1000);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                addMessage('assistant', '发生错误，请重试。');
+                addMessage('assistant', 'Error, try again');
             }
         }
 
-        // 支持按回车发送消息
+        // Press enter to input message
         document.getElementById('messageInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 sendMessage();
