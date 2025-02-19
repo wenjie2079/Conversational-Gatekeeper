@@ -94,7 +94,7 @@
             }
             document.querySelector('.login-container').style.display = 'none';
             document.querySelector('.chat-container').style.display = 'block';
-            addMessage('assistant', 'Hi! To authenticate your name, let us Chat!');
+            addMessage('assistant', `Hi! To authenticate you are ${currentUsername}, let us chat!`);
         }
 
         function addMessage(role, content) {
